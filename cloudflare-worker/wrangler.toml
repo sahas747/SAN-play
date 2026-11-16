@@ -1,0 +1,13 @@
+name = "san-player-media"
+main = "src/index.js"
+compatibility_date = "2026-11-16"
+
+[[r2_buckets]]
+binding = "MEDIA"
+bucket_name = "san-player-media"
+
+[vars]
+FIREBASE_PROJECT_ID = "san-play"
+# Set PUBLIC_BASE_URL to your R2 bucket's public r2.dev URL or (recommended) custom domain.
+PUBLIC_BASE_URL = "https://YOUR-PUBLIC-R2-DOMAIN"
+ALLOWED_ORIGIN = "https://YOUR-SAN-PLAYER-SITE-DOMAIN"

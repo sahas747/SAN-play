@@ -1,0 +1,25 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "scripts/**",
+      "*.rules",
+      "README.md",
+      "DEPLOY.md",
+      "functions/**",
+      "INTEGRATION.md"
+    ]
+  },
+  "functions": {
+    "source": "functions"
+  }
+}

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07060f">
+<meta name="description" content="SAN Player — music for every moment.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SAN Player">
+<title>SAN Player | Music for every moment</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/san-player-logo.png">
+<link rel="apple-touch-icon" href="assets/san-icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="app">
+  <aside class="sidebar glass" aria-label="Main navigation">
+    <a class="brand" href="./"><img src="assets/san-player-logo.png" alt="SAN Player logo"><span>SAN <b>PLAYER</b></span></a>
+    <button class="nav-btn active" data-act="go" data-view="home"><i data-icon="home"></i>Home</button>
+    <button class="nav-btn" data-act="go" data-view="search"><i data-icon="search"></i>Search</button>
+    <button class="nav-btn" data-act="go" data-view="library"><i data-icon="library"></i>Your Library</button>
+    <div class="side-label">COLLECTION</div>
+    <button class="nav-btn" data-act="go" data-view="liked"><i data-icon="heart"></i>Liked Songs</button>
+    <div class="sidebar-foot">
+      <div class="free"><span class="dot"></span> Free for everyone. No login needed.</div>
+      <button class="nav-btn" data-admin data-act="admin" hidden><i data-icon="settings"></i>Admin dashboard</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar glass">
+      <img class="m-logo" src="assets/san-player-logo.png" alt="">
+      <div class="top-spacer"></div>
+      <button class="btn ghost small" data-act="install"><i data-icon="download"></i> Install</button>
+      <button class="btn ghost small" data-admin data-act="admin" hidden>Admin</button>
+      <button class="btn primary small" id="loginBtn" data-act="login">Log in</button>
+      <div class="user-chip" id="userChip" hidden>
+        <span class="avatar" id="userAvatar"></span>
+        <span class="uname" id="userName"></span>
+        <button class="ib" data-act="logout" aria-label="Log out"><i data-icon="logout"></i></button>
+      </div>
+    </header>
+    <div class="content" id="view"></div>
+    <footer class="footer"><span>© 2026 SAN PLAYER</span><span>Music brings us together.</span></footer>
+  </main>
+
+  <footer class="player glass" id="player" aria-label="Player">
+    <div class="np-wrap">
+      <div class="np" data-act="sheet-open" role="button" tabindex="0">
+        <span id="pCover"></span>
+        <div class="np-meta"><b id="pTitle">Choose a song</b><small id="pArtist">Your music starts here</small><em id="pBadge" class="src"></em></div>
+      </div>
+      <div class="np-actions">
+        <button class="ib desk" data-act="like" aria-label="Like"><i data-icon="heart"></i></button>
+        <button class="ib desk" data-act="share" aria-label="Share"><i data-icon="share"></i></button>
+        <button class="ib only-mobile" data-act="toggle" aria-label="Play or pause"><i data-icon="play"></i></button>
+        <button class="ib only-mobile" data-act="next" aria-label="Next"><i data-icon="next"></i></button>
+      </div>
+    </div>
+    <div class="center">
+      <div class="transport">
+        <button class="ib" data-act="shuffle" aria-label="Shuffle"><i data-icon="shuffle"></i></button>
+        <button class="ib" data-act="prev" aria-label="Previous"><i data-icon="prev"></i></button>
+        <button class="toggle" data-act="toggle" aria-label="Play or pause"><i data-icon="play"></i></button>
+        <button class="ib" data-act="next" aria-label="Next"><i data-icon="next"></i></button>
+        <button class="ib" data-act="repeat" aria-label="Repeat"><i data-icon="repeat"></i></button>
+      </div>
+      <div class="seekrow">
+        <span class="tcur">0:00</span>
+        <input class="seek" type="range" min="0" max="1000" value="0" aria-label="Seek">
+        <span class="tdur">0:00</span>
+      </div>
+    </div>
+    <div class="right">
+      <i data-icon="volume"></i>
+      <input id="vol" type="range" min="0" max="1" step="0.01" aria-label="Volume">
+      <button class="ib" data-act="sheet-open" aria-label="Open full player"><i data-icon="expand"></i></button>
+    </div>
+  </footer>
+
+  <nav class="mnav glass" aria-label="Mobile navigation">
+    <button class="active" data-act="go" data-view="home"><i data-icon="home"></i><span>Home</span></button>
+    <button data-act="go" data-view="search"><i data-icon="search"></i><span>Search</span></button>
+    <button data-act="go" data-view="library"><i data-icon="library"></i><span>Library</span></button>
+    <button data-act="go" data-view="liked"><i data-icon="heart"></i><span>Liked</span></button>
+  </nav>
+</div>
+
+<!-- Video / embed dock: moves to the centre of the Now Playing sheet when it is open -->
+<div class="media-dock" id="mediaDock" hidden>
+  <div id="ytWrap" hidden><div id="ytHost"></div></div>
+  <div id="embedWrap" hidden></div>
+</div>
+
+<!-- Full-screen Now Playing -->
+<section class="sheet" id="sheet" aria-label="Now playing">
+  <div class="sheet-top">
+    <button class="ib" data-act="sheet-close" aria-label="Close"><i data-icon="chevron"></i></button>
+    <span class="muted">Now playing</span>
+    <span></span>
+  </div>
+  <div class="sheet-body">
+    <div class="sheet-cover" id="sCover"></div>
+    <div class="sheet-meta">
+      <div class="sm-text"><h2 id="sTitle">Choose a song</h2><p id="sArtist">Your music starts here</p><em id="sBadge" class="src"></em></div>
+      <div class="sm-actions">
+        <button class="ib" data-act="like" aria-label="Like"><i data-icon="heart"></i></button>
+        <button class="ib" data-act="share" aria-label="Share"><i data-icon="share"></i></button>
+      </div>
+    </div>
+    <div class="seekrow big">
+      <span class="tcur">0:00</span>
+      <input class="seek" type="range" min="0" max="1000" value="0" aria-label="Seek">
+      <span class="tdur">0:00</span>
+    </div>
+    <div class="transport big">
+      <button class="ib" data-act="shuffle" aria-label="Shuffle"><i data-icon="shuffle"></i></button>
+      <button class="ib" data-act="prev" aria-label="Previous"><i data-icon="prev"></i></button>
+      <button class="toggle big" data-act="toggle" aria-label="Play or pause"><i data-icon="play"></i></button>
+      <button class="ib" data-act="next" aria-label="Next"><i data-icon="next"></i></button>
+      <button class="ib" data-act="repeat" aria-label="Repeat"><i data-icon="repeat"></i></button>
+    </div>
+    <div class="lyrics glass-sm">
+      <span class="label">LYRICS</span>
+      <p id="sLyrics">No lyrics available for this song.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Admin dashboard and other dialogs -->
+<div class="modal-wrap" id="modal" hidden>
+  <div class="modal glass" role="dialog" aria-modal="true">
+    <button class="x ib" data-act="close-modal" aria-label="Close"><i data-icon="x"></i></button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="firebase-config.js"></script>
+<script src="r2-config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
